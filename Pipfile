@@ -10,6 +10,8 @@ djangorestframework-camel-case = "*"
 
 [dev-packages]
 flake8 = "*"
+pytest-django = "*"
+faker = "*"
 
 [requires]
 python_version = "3.10"

@@ -28,6 +28,8 @@ class Specialist(AbstractBaseUser, PermissionsMixin):
     )
     direction = models.CharField(max_length=50, choices=Direction.choices)
     rating = models.PositiveIntegerField(null=False, blank=True, default=0)
+    languages = models.ManyToManyField('core.Language', through='SpecialistLanguage')
+    technologies = models.ManyToManyField('core.Technology', through='SpecialistTechnology')
     current_project = models.ForeignKey(
         'core.Project',
         on_delete=models.SET_NULL,
@@ -44,8 +46,6 @@ class Specialist(AbstractBaseUser, PermissionsMixin):
         through='SpecialistSelfProject',
         related_name='self_projects',
     )
-    languages = models.ManyToManyField('core.Language', through='SpecialistLanguage')
-    technologies = models.ManyToManyField('core.Technology', through='SpecialistTechnology')
 
     # additional information
     name = models.CharField(max_length=100, null=False, blank=True, default='')
