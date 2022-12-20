@@ -103,6 +103,22 @@ def test_create_specialist_with_wrong_params():
     """))
 
 
+def test_create_specialist_with_same_nickname():
+    specialists_data = [generate_creation_specialist_data(nickname='Olaf') for _ in range(2)]
+    api.create_specialist(data=specialists_data[0])
+    response = api.create_specialist(data=specialists_data[1])
+    response_code = response.status_code
+
+    assert response_code == HTTP_400_BAD_REQUEST, logger.error(textwrap.dedent(f"""
+        Invalid status code, should be {HTTP_400_BAD_REQUEST}, but equal {response_code}
+    """))
+
+    assert response.data.get('nickname'), logger.error(textwrap.dedent("""
+        After creation second specialist with same nickname, we should get validation error with key 
+        nickname, but it's absent
+    """))
+
+
 def test_authenticate_specialist():
     creation_data = generate_creation_specialist_data()
     created_specialist = api.create_specialist(data=creation_data).data

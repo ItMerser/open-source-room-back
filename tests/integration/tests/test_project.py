@@ -105,6 +105,24 @@ def test_create_project_with_wrong_params():
     """))
 
 
+def test_create_project_with_same_name():
+    specialist = create_specialists()[0]
+    auth_token = specialist['token']
+    projects_data = [generate_project_data(name='pytest') for _ in range(2)]
+    api.create_project(data=projects_data[0], token=auth_token)
+    response = api.create_project(data=projects_data[1], token=auth_token)
+    response_code = response.status_code
+
+    assert response_code == HTTP_400_BAD_REQUEST, logger.error(textwrap.dedent(f"""
+        Invalid status code, should be {HTTP_400_BAD_REQUEST}, but equal {response_code}
+    """))
+
+    assert response.data.get('name'), logger.error(textwrap.dedent("""
+        After creation second specialist with same name, we should get validation error with key 
+        name, but it's absent
+    """))
+
+
 def test_update_project():
     created_specialist = create_specialists(projects=1)[0]
     project_id = created_specialist['self_projects'][0]['id']

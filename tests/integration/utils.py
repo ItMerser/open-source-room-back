@@ -5,7 +5,7 @@ from tests.integration.api import api
 from tests.integration.config import fake
 
 
-def generate_creation_specialist_data() -> dict:
+def generate_creation_specialist_data(**kwargs) -> dict:
     nickname = fake.user_name()
     return {
         'nickname': nickname,
@@ -18,10 +18,11 @@ def generate_creation_specialist_data() -> dict:
         'surname': fake.last_name(),
         'country': fake.country(),
         'city': fake.city(),
+        **kwargs,
     }
 
 
-def generate_updating_specialist_data() -> dict:
+def generate_updating_specialist_data(**kwargs) -> dict:
     return {
         'nickname': fake.user_name(),
         'github_nickname': fake.user_name(),
@@ -32,10 +33,11 @@ def generate_updating_specialist_data() -> dict:
         'surname': fake.last_name(),
         'country': fake.country(),
         'city': fake.city(),
+        **kwargs,
     }
 
 
-def generate_project_data(is_private: bool = False) -> dict:
+def generate_project_data(**kwargs) -> dict:
     project_name = fake.project()
     return {
         'name': project_name,
@@ -43,8 +45,9 @@ def generate_project_data(is_private: bool = False) -> dict:
         'description': fake.sentence(),
         'version': '1.0',
         'type': choice(ProjectType.values),
-        'is_private': is_private,
-        'github': fake.url()
+        'is_private': False,
+        'github': fake.url(),
+        **kwargs,
     }
 
 

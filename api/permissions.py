@@ -1,9 +1,6 @@
 from dataclasses import dataclass
 
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import BasePermission
-
-from core.models import Project
 
 
 @dataclass
