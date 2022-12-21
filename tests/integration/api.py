@@ -126,5 +126,29 @@ class API:
             data=data
         )
 
+    # OFFER API
+    def add_to_team(self, data: dict, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.post(reverse(URL_PATTERN_NAME.ADD_TO_TEAM), data=data)
+
+    def join_to_team(self, data: dict, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.post(reverse(URL_PATTERN_NAME.JOIN_TO_TEAM), data=data)
+
+    def give_ownership(self, data: dict, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.post(reverse(URL_PATTERN_NAME.GIVE_OWNERSHIP), data=data)
+
+    def get_ownership(self, data: dict, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.post(reverse(URL_PATTERN_NAME.GET_OWNERSHIP), data=data)
+
+    def response_to_offer(self, id: int, data: dict, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.patch(
+            reverse(URL_PATTERN_NAME.RESPONSE_TO_OFFER, kwargs={'offer_id': id}),
+            data=data
+        )
+
 
 api = API()

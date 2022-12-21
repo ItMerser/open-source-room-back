@@ -39,3 +39,11 @@ class ProjectType(models.TextChoices):
     REDACTOR = ('REDACTOR', 'REDACTOR')
     BROWSER = ('BROWSER', 'BROWSER')
     FILE_MANAGER = ('FILE MANAGER', 'FILE MANAGER')
+
+
+# For core.Offer
+class OfferType(models.TextChoices):
+    JOIN_TO_TEAM = ('JOIN_TO_TEAM', 'JOIN_TO_TEAM')
+    ADD_TO_TEAM = ('ADD_TO_TEAM', 'ADD_TO_TEAM')
+    GIVE_OWNERSHIP = ('GIVE_OWNERSHIP', 'GIVE_OWNERSHIP')
+    GET_OWNERSHIP = ('GET_OWNERSHIP', 'GET_OWNERSHIP')

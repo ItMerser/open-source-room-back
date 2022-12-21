@@ -26,6 +26,13 @@ from api.views.specialist import (
     SpecialistTechnologiesDeletionApiView,
     SpecialistDeletionApiView,
 )
+from api.views.offer import (
+    OfferAddingToTeamApiView,
+    OfferJoiningToTeamApiView,
+    OfferGivingOwnershipApiView,
+    OfferGettingOwnershipApiView,
+    OfferResponseApiView,
+)
 from api.views.technology import LanguagesListApiView, TechnologiesListApiView
 
 
@@ -55,6 +62,12 @@ class URL_PATTERN_NAME:
     REMOVE_PROJECT_LANGUAGES = 'REMOVE_PROJECT_LANGUAGES'
     ADD_TECHNOLOGIES_TO_PROJECT = 'ADD_TECHNOLOGIES_TO_PROJECT'
     REMOVE_PROJECT_TECHNOLOGIES = 'REMOVE_PROJECT_TECHNOLOGIES'
+
+    ADD_TO_TEAM = 'ADD_TO_TEAM'
+    JOIN_TO_TEAM = 'JOIN_TO_TEAM'
+    GIVE_OWNERSHIP = 'GIVE_OWNERSHIP'
+    GET_OWNERSHIP = 'GET_OWNERSHIP'
+    RESPONSE_TO_OFFER = 'RESPONSE_TO_OFFER'
 
 
 urlpatterns = [
@@ -152,5 +165,31 @@ urlpatterns = [
         'projects/<int:project_id>/technologies/deletion',
         ProjectTechnologiesDeletionApiView.as_view(),
         name=URL_PATTERN_NAME.REMOVE_PROJECT_TECHNOLOGIES
+    ),
+
+    path(
+        'offers/add_to_team',
+        OfferAddingToTeamApiView.as_view(),
+        name=URL_PATTERN_NAME.ADD_TO_TEAM
+    ),
+    path(
+        'offers/join_to_team',
+        OfferJoiningToTeamApiView.as_view(),
+        name=URL_PATTERN_NAME.JOIN_TO_TEAM
+    ),
+    path(
+        'offers/give_ownership',
+        OfferGivingOwnershipApiView.as_view(),
+        name=URL_PATTERN_NAME.GIVE_OWNERSHIP
+    ),
+    path(
+        'offers/get_ownership',
+        OfferGettingOwnershipApiView.as_view(),
+        name=URL_PATTERN_NAME.GET_OWNERSHIP
+    ),
+    path(
+        'offers/<int:offer_id>/response',
+        OfferResponseApiView.as_view(),
+        name=URL_PATTERN_NAME.RESPONSE_TO_OFFER
     ),
 ]
