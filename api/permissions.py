@@ -11,7 +11,6 @@ class ERROR_MESSAGE:
     IS_PROJECT_OWNER = "you must be the project owner"
     IS_RECIPIENT = "you don't have such an offer"
     IS_NOT_RECIPIENT = "you cannot sent the offer to himself"
-    SENDER_IS_PROJECT_OWNER = "you must be the project owner"
     RECIPIENT_IS_NOT_PROJECT_OWNER = "this recipient doesn't own the project"
     IS_NOT_TEAM_MEMBER = "you are the team member already"
 
@@ -45,7 +44,7 @@ class IsNotRecipient(BasePermission):
 
 
 class SenderIsProjectOwner(BasePermission):
-    message = ERROR_MESSAGE.SENDER_IS_PROJECT_OWNER
+    message = ERROR_MESSAGE.IS_PROJECT_OWNER
 
     def has_object_permission(self, request, view, obj):
         project_id = request.data['project_id']

@@ -5,9 +5,11 @@ from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
     HTTP_400_BAD_REQUEST,
+    HTTP_403_FORBIDDEN,
     HTTP_404_NOT_FOUND,
 )
 
+from api.permissions import ERROR_MESSAGE
 from tests.integration.api import api
 from tests.integration.config import logger
 from tests.integration.utils import generate_project_data, create_specialists
@@ -296,8 +298,7 @@ def test_remove_project_technologies():
 def test_take_part():
     created_specialist = create_specialists(projects=1)[0]
     project_id = created_specialist['own_projects'][0]['id']
-    auth_token = created_specialist['token']
-    response = api.take_part(id=project_id, token=auth_token)
+    response = api.take_part(id=project_id, token=created_specialist['token'])
     response_code = response.status_code
 
     assert response_code == HTTP_200_OK, logger.error(textwrap.dedent(f"""
@@ -319,4 +320,22 @@ def test_take_part():
     assert specialist_projects_ids == [project_id], logger.error(textwrap.dedent(f"""
         After participating specialist projects ids should be {[project_id]}, 
         but equal {specialist_projects_ids}
+    """))
+
+
+def test_take_part_not_own_project():
+    specialist_1, specialist_2 = create_specialists(count=2, projects=1)
+    project_id = specialist_2['own_projects'][0]['id']
+    response = api.take_part(id=project_id, token=specialist_1['token'])
+    response_code = response.status_code
+
+    assert response_code == HTTP_403_FORBIDDEN, logger.error(textwrap.dedent(f"""
+        Invalid status code, should be {HTTP_403_FORBIDDEN}, but equal {response_code}
+    """))
+
+    error_message = response.data['detail']
+
+    assert error_message == ERROR_MESSAGE.IS_PROJECT_OWNER, logger.error(textwrap.dedent(f"""
+        Error message after status code 403 should be {ERROR_MESSAGE.IS_PROJECT_OWNER}, 
+        but equal {error_message}
     """))
