@@ -41,7 +41,7 @@ def test_projects_list():
 
 def test_retrieve_project():
     created_specialist = create_specialists(projects=1)[0]
-    created_project_id = created_specialist['self_projects'][0]['id']
+    created_project_id = created_specialist['own_projects'][0]['id']
     created_project = api.get_project(id=created_project_id).data
 
     response = api.get_project(id=created_project_id)
@@ -125,7 +125,7 @@ def test_create_project_with_same_name():
 
 def test_update_project():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     data = generate_project_data()
     response = api.update_project(
         id=project_id,
@@ -149,7 +149,7 @@ def test_update_project():
 
 def test_delete_project():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     response_after_deletion = api.delete_project(
         id=project_id,
         token=created_specialist['token']
@@ -161,7 +161,7 @@ def test_delete_project():
     """))
 
     response = api.get_specialist(id=created_specialist['id'])
-    specialist_projects_after_deleting = response.data['self_projects']
+    specialist_projects_after_deleting = response.data['own_projects']
 
     assert not specialist_projects_after_deleting, logger.error(textwrap.dedent(f"""
         Specialist project with id {project_id} after deleting still exists
@@ -170,7 +170,7 @@ def test_delete_project():
 
 def test_add_languages_to_project():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     languages_for_adding = api.get_languages().data
     expected_new_languages = copy.copy(languages_for_adding)
 
@@ -196,7 +196,7 @@ def test_add_languages_to_project():
 
 def test_remove_project_languages():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     auth_token = created_specialist['token']
     languages_for_adding = api.get_languages().data
     api.add_languages_to_project(
@@ -231,7 +231,7 @@ def test_remove_project_languages():
 
 def test_add_technologies_to_project():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     technologies = api.get_technologies().data
     technologies_for_adding = [tech['name'] for tech in technologies]
     expected_technologies = copy.copy(technologies_for_adding)
@@ -258,7 +258,7 @@ def test_add_technologies_to_project():
 
 def test_remove_project_technologies():
     created_specialist = create_specialists(projects=1)[0]
-    project_id = created_specialist['self_projects'][0]['id']
+    project_id = created_specialist['own_projects'][0]['id']
     auth_token = created_specialist['token']
     technologies = api.get_technologies().data
     technologies_for_adding = [tech['name'] for tech in technologies]

@@ -21,7 +21,7 @@ class IsProjectOwner(BasePermission):
 
     def has_permission(self, request, view):
         project_id = request.parser_context['kwargs']['project_id']
-        return request.user.self_projects.filter(pk=project_id).exists()
+        return request.user.own_projects.filter(pk=project_id).exists()
 
 
 class IsRecipient(BasePermission):
@@ -49,8 +49,8 @@ class SenderIsProjectOwner(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         project_id = request.data['project_id']
-        print(obj.self_projects.filter(pk=project_id))
-        is_owner = obj.self_projects.filter(pk=project_id).exists()
+        print(obj.own_projects.filter(pk=project_id))
+        is_owner = obj.own_projects.filter(pk=project_id).exists()
         return is_owner
 
 

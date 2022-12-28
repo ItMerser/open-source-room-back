@@ -21,13 +21,13 @@ class SpecialistSerializer(serializers.ModelSerializer):
     technologies = serializers.SlugRelatedField(slug_field='name', read_only=True, many=True)
     current_project = SpecialistProjectSerializer(read_only=True)
     projects = SpecialistProjectSerializer(many=True, read_only=True)
-    self_projects = SpecialistProjectSerializer(many=True, read_only=True)
+    own_projects = SpecialistProjectSerializer(many=True, read_only=True)
     age = serializers.SerializerMethodField()
 
     class Meta:
         model = Specialist
         fields = ('id', 'nickname', 'github_nickname', 'direction', 'rating', 'languages',
-                  'technologies', 'current_project', 'projects', 'self_projects', 'email', 'github',
+                  'technologies', 'current_project', 'projects', 'own_projects', 'email', 'github',
                   'name', 'surname', 'age', 'country', 'city', 'about',)
         depth = 1
 

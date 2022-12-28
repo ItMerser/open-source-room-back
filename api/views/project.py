@@ -49,7 +49,7 @@ class ProjectCreationApiView(APIView):
         serializer.validated_data['owner'] = specialist
         project = serializer.save()
 
-        specialist.self_projects.add(project)
+        specialist.own_projects.add(project)
 
         serialized_project = ProjectSerializer(project)
         return Response(status=HTTP_201_CREATED, data=serialized_project.data)

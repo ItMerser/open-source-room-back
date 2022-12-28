@@ -41,10 +41,10 @@ class Specialist(AbstractBaseUser, PermissionsMixin):
         through='SpecialistProject',
         related_name='projects',
     )
-    self_projects = models.ManyToManyField(
+    own_projects = models.ManyToManyField(
         'core.Project',
-        through='SpecialistSelfProject',
-        related_name='self_projects',
+        through='SpecialistOwnProject',
+        related_name='own_projects',
     )
 
     # additional information
@@ -84,15 +84,15 @@ class SpecialistProject(models.Model):
         ]
 
 
-class SpecialistSelfProject(models.Model):
+class SpecialistOwnProject(models.Model):
     specialist = models.ForeignKey(Specialist, on_delete=models.CASCADE)
-    self_project = models.ForeignKey('core.Project', on_delete=models.CASCADE)
+    own_project = models.ForeignKey('core.Project', on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['specialist', 'self_project'],
-                name='specialist__self_project__constraint',
+                fields=['specialist', 'own_project'],
+                name='specialist__own_project__constraint',
             )
         ]
 

@@ -9,7 +9,7 @@ from tests.integration.utils import create_specialists
 
 def test_add_to_team():
     sender, recipient = create_specialists(count=2, projects=1)
-    sender_project_id = sender['self_projects'][0]['id']
+    sender_project_id = sender['own_projects'][0]['id']
     recipient_id = recipient['id']
     data = {'recipient_id': recipient_id, 'project_id': sender_project_id}
     response_after_creation_offer = api.add_to_team(data=data, token=sender['token'])
@@ -62,7 +62,7 @@ def test_add_to_team():
 
 def test_join_to_team():
     sender, recipient = create_specialists(count=2, projects=1)
-    recipient_project_id = recipient['self_projects'][0]['id']
+    recipient_project_id = recipient['own_projects'][0]['id']
     sender_id = sender['id']
     data = {'recipient_id': recipient['id'], 'project_id': recipient_project_id}
     response_after_creation_offer = api.join_to_team(data=data, token=sender['token'])
@@ -117,7 +117,7 @@ def test_join_to_team():
 
 def test_give_ownership():
     sender, recipient = create_specialists(count=2, projects=1)
-    sender_project_id = sender['self_projects'][0]['id']
+    sender_project_id = sender['own_projects'][0]['id']
     sender_id = sender['id']
     recipient_id = recipient['id']
     data = {'recipient_id': recipient_id, 'project_id': sender_project_id}
@@ -137,26 +137,26 @@ def test_give_ownership():
     """))
 
     sender_after_accepted_offer = api.get_specialist(id=sender_id).data
-    sender_self_projects = sender_after_accepted_offer['self_projects']
+    sender_own_projects = sender_after_accepted_offer['own_projects']
 
-    assert not sender_self_projects, logger.error(textwrap.dedent(f"""
+    assert not sender_own_projects, logger.error(textwrap.dedent(f"""
         After giving the project ownership with id {sender_project_id}, sender don't have any 
-        self_projects, but its self_projects equal {sender_self_projects}
+        own_projects, but its own_projects equal {sender_own_projects}
     """))
 
     recipient_after_accepted_offer = api.get_specialist(id=recipient_id).data
-    recipient_self_projects_ids = [project['id'] for project in
-                                   recipient_after_accepted_offer['self_projects']]
+    recipient_own_projects_ids = [project['id'] for project in
+                                  recipient_after_accepted_offer['own_projects']]
 
-    assert sender_project_id in recipient_self_projects_ids, logger.error(textwrap.dedent(f"""
+    assert sender_project_id in recipient_own_projects_ids, logger.error(textwrap.dedent(f"""
         Recipient after accepted offer must have project with id {sender_project_id} in your 
-        list of self_projects, but him self_projects ids equal {recipient_self_projects_ids}
+        list of own_projects, but him own_projects ids equal {recipient_own_projects_ids}
     """))
 
 
 def test_get_ownership():
     sender, recipient = create_specialists(count=2, projects=1)
-    recipient_project_id = recipient['self_projects'][0]['id']
+    recipient_project_id = recipient['own_projects'][0]['id']
     sender_id = sender['id']
     recipient_id = recipient['id']
     data = {'recipient_id': recipient_id, 'project_id': recipient_project_id}
@@ -176,21 +176,20 @@ def test_get_ownership():
     """))
 
     sender_after_accepted_offer = api.get_specialist(id=sender_id).data
-    sender_self_projects_ids = [project['id'] for project in
-                                sender_after_accepted_offer['self_projects']]
+    sender_own_projects_ids = [project['id'] for project in
+                               sender_after_accepted_offer['own_projects']]
 
-    assert recipient_project_id in sender_self_projects_ids, logger.error(textwrap.dedent(f"""
+    assert recipient_project_id in sender_own_projects_ids, logger.error(textwrap.dedent(f"""
         Sender after accepted offer must have project with id {recipient_project_id} in your 
-        list of self_projects, but him self_projects ids equal {sender_self_projects_ids}
+        list of own_projects, but him own_projects ids equal {sender_own_projects_ids}
     """))
 
     recipient_after_accepted_offer = api.get_specialist(id=recipient_id).data
-    recipient_self_projects = recipient_after_accepted_offer['self_projects']
+    recipient_own_projects = recipient_after_accepted_offer['own_projects']
 
-    assert not recipient_self_projects, logger.error(textwrap.dedent(f"""
+    assert not recipient_own_projects, logger.error(textwrap.dedent(f"""
         After giving the project ownership with id {recipient_project_id}, recipient don't have any 
-        self_projects, but its self_projects equal {recipient_self_projects}
+        own_projects, but its own_projects equal {recipient_own_projects}
     """))
-
 
 # TODO write negative tests for offers

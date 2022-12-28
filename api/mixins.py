@@ -50,9 +50,9 @@ class OfferMixin:
         offer.project.team.add(offer.sender)
 
     def _give_ownership(self, offer: Offer):
-        offer.sender.self_projects.remove(offer.project)
-        offer.recipient.self_projects.add(offer.project)
+        offer.sender.own_projects.remove(offer.project)
+        offer.recipient.own_projects.add(offer.project)
 
     def _get_ownership(self, offer: Offer):
-        offer.sender.self_projects.add(offer.project)
-        offer.recipient.self_projects.remove(offer.project)
+        offer.sender.own_projects.add(offer.project)
+        offer.recipient.own_projects.remove(offer.project)
