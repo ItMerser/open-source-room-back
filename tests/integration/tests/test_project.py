@@ -291,3 +291,32 @@ def test_remove_project_technologies():
             Remaining technologies after removing should be {expected_technologies_after_removing}, 
             but remain {technologies_after_removing}     
         """))
+
+
+def test_take_part():
+    created_specialist = create_specialists(projects=1)[0]
+    project_id = created_specialist['own_projects'][0]['id']
+    auth_token = created_specialist['token']
+    response = api.take_part(id=project_id, token=auth_token)
+    response_code = response.status_code
+
+    assert response_code == HTTP_200_OK, logger.error(textwrap.dedent(f"""
+        Invalid status code, should be {HTTP_200_OK}, but equal {response_code}
+    """))
+
+    specialist_after_participating = api.get_specialist(id=created_specialist['id']).data
+
+    new_current_project_id = specialist_after_participating['current_project'].get('id')
+
+    assert new_current_project_id == project_id, logger.error(textwrap.dedent(f"""
+        After participating specialist current project id should be {project_id}, 
+        but equal {new_current_project_id}  
+    """))
+
+    specialist_projects_ids = [project['id'] for project in
+                               specialist_after_participating['projects']]
+
+    assert specialist_projects_ids == [project_id], logger.error(textwrap.dedent(f"""
+        After participating specialist projects ids should be {[project_id]}, 
+        but equal {specialist_projects_ids}
+    """))

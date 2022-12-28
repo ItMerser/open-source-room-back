@@ -126,6 +126,13 @@ class API:
             data=data
         )
 
+    def take_part(self, id: int, token: str):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+        return self.client.patch(
+            reverse(URL_PATTERN_NAME.TAKE_PART_IN_THE_PROJECT,
+                    kwargs={'project_id': id})
+        )
+
     # OFFER API
     def add_to_team(self, data: dict, token: str):
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)

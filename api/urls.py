@@ -12,6 +12,7 @@ from api.views.project import (
     ProjectTechnologiesAddingApiView,
     ProjectTechnologiesDeletionApiView,
     ProjectDeletionApiView,
+    ProjectTakePartApiView
 )
 from api.views.specialist import (
     SpecialistsListApiView,
@@ -62,6 +63,7 @@ class URL_PATTERN_NAME:
     REMOVE_PROJECT_LANGUAGES = 'REMOVE_PROJECT_LANGUAGES'
     ADD_TECHNOLOGIES_TO_PROJECT = 'ADD_TECHNOLOGIES_TO_PROJECT'
     REMOVE_PROJECT_TECHNOLOGIES = 'REMOVE_PROJECT_TECHNOLOGIES'
+    TAKE_PART_IN_THE_PROJECT = 'TAKE_PART_IN_THE_PROJECT'
 
     ADD_TO_TEAM = 'ADD_TO_TEAM'
     JOIN_TO_TEAM = 'JOIN_TO_TEAM'
@@ -165,6 +167,11 @@ urlpatterns = [
         'projects/<int:project_id>/technologies/deletion',
         ProjectTechnologiesDeletionApiView.as_view(),
         name=URL_PATTERN_NAME.REMOVE_PROJECT_TECHNOLOGIES
+    ),
+    path(
+        'projects/<int:project_id>/take_part',
+        ProjectTakePartApiView.as_view(),
+        name=URL_PATTERN_NAME.TAKE_PART_IN_THE_PROJECT
     ),
 
     path(

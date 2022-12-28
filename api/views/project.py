@@ -155,3 +155,17 @@ class ProjectDeletionApiView(APIView):
             return Response(status=HTTP_200_OK, data=response_data)
         except Project.DoesNotExist:
             return Response(status=HTTP_404_NOT_FOUND)
+
+
+class ProjectTakePartApiView(APIView):
+    'Take part in one of own_project'
+    permission_classes = [IsAuthenticated, IsProjectOwner]
+    authentication_classes = [TokenAuthentication]
+
+    def patch(self, request, project_id: int):
+        new_current_project = Project.objects.get(pk=project_id)
+        specialist = request.user
+        specialist.current_project = new_current_project
+        specialist.projects.add(new_current_project)
+        specialist.save()
+        return Response(status=HTTP_200_OK)
