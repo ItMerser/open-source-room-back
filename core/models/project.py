@@ -10,7 +10,7 @@ class Project(models.Model):
     version = models.CharField(max_length=20, null=False, blank=True, default='0.1')
     type = models.CharField(max_length=50, choices=ProjectType.choices)
     is_private = models.BooleanField(null=False, blank=True, default=False)
-    start_date = models.DateField(auto_now=True)
+    start_date = models.DateField(auto_now_add=True)
     rating = models.BigIntegerField(null=False, blank=True, default=0)
     github = models.URLField(null=False, blank=True, default='')
     languages = models.ManyToManyField('core.Language', through='ProjectLanguage')
