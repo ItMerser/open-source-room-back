@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -163,9 +164,12 @@ class ProjectTakePartApiView(APIView):
     authentication_classes = [TokenAuthentication]
 
     def patch(self, request, project_id: int):
-        new_current_project = Project.objects.get(pk=project_id)
-        specialist = request.user
-        specialist.current_project = new_current_project
-        specialist.projects.add(new_current_project)
-        specialist.save()
-        return Response(status=HTTP_200_OK)
+        with transaction.atomic():
+            new_current_project = Project.objects.get(pk=project_id)
+            specialist = request.user
+            specialist.current_project = new_current_project
+            specialist.projects.add(new_current_project)
+            specialist.save()
+
+            new_current_project.team.add(specialist)
+            return Response(status=HTTP_200_OK)

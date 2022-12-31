@@ -298,6 +298,7 @@ def test_remove_project_technologies():
 def test_take_part():
     created_specialist = create_specialists(projects=1)[0]
     project_id = created_specialist['own_projects'][0]['id']
+    specialist_id = created_specialist['id']
     response = api.take_part(id=project_id, token=created_specialist['token'])
     response_code = response.status_code
 
@@ -320,6 +321,15 @@ def test_take_part():
     assert specialist_projects_ids == [project_id], logger.error(textwrap.dedent(f"""
         After participating specialist projects ids should be {[project_id]}, 
         but equal {specialist_projects_ids}
+    """))
+
+    project_after_participating = api.get_project(id=new_current_project_id).data
+
+    members_ids = [member['id'] for member in project_after_participating['team']]
+
+    assert specialist_id in members_ids, logger.error(textwrap.dedent(f"""
+        After participating project with id {project_id} should have new teammate 
+        with id {specialist_id}, but he is absent
     """))
 
 
